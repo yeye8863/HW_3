@@ -11,24 +11,13 @@ class MoviesController < ApplicationController
   end
 
   def index
-    setup = Movie.set_options(params, session)
-    
-    if setup[:redirect]
-      flash.keep
-      
-      redirect_to(
-      :action => params[:action], :controller => params[:controller],
-      :ratings=>setup[:ratings], :order_by => setup[:order_by]
-      ) 
-    end
-    
+    @movies = Movie.movies(params[:ratings],params[:order_by])
     @ratings = Movie.ratings
-    #heroku
-    @filters = setup[:ratings]
-    @movies = Movie.movies(@filters,setup[:order_by])
-   
-    session[:ratings]=setup[:ratings]
-    session[:order_by]=setup[:order_by]
+    @filters = if params[:ratings].nil? #can't work at the same time
+      @ratings
+    else
+      params[:ratings]
+    end
   end
 
   def new
