@@ -22,7 +22,8 @@ class MoviesController < ApplicationController
       ) 
     end
     
-     @ratings = Movie.ratings
+    @ratings = Movie.ratings
+    #heroku
     @filters = setup[:ratings]
     @movies = Movie.movies(@filters,setup[:order_by])
    
